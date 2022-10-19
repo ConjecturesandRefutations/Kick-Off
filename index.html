@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="./styles/styles.css" />
+    </head>
+
+    <body>
+
+<section class="opening-section">
+    <img src="./images/Kick Off Logo.png" alt="logo" id="logo">
+
+    <div id="opening-text">
+    <p>Do you have what it takes to become the best footballer ever?!</p>
+    <p>Use the <img src="./images/computer arrows.png" alt="arrows" id="arrows" width="40" height="40"> buttons to avoid the opponents. Score by reaching the goal!</p>
+    </div>
+
+
+    <button id="start-button">StartGame</button>
+</section>
+
+    <div id="score"></div>
+
+  <canvas id="canvas" width="500" height="700"></canvas> 
+
+<section class="tackled-section">
+    <p>You were tackled! Bad luck!</p>
+    <button class="try-again-button">Restart</button>
+    <button class="main-menu-button">Main Menu</button>  
+    <canvas id="canvas2" width="500" height="700"></canvas> 
+</section>
+
+<section class="goal-section">
+    <p>You scored! Well Done!</p>
+    <button class="try-again-button">Restart</button>
+    <button class="main-menu-button">Main Menu</button> 
+    <canvas id="canvas3" width="500" height="700"></canvas> 
+</section>
+
+    <script type="text/javascript" src="./jsFiles/ball.js"></script>
+    <script type="text/javascript" src="./jsFiles/obstacle.js"></script>
+    <script type="text/javascript" src="./jsFiles/game.js"></script>
+    <script type="text/javascript" src="./jsFiles/index.js"></script>
+    
+</body>
+
+</html>

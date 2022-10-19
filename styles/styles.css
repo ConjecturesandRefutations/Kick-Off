@@ -1,0 +1,66 @@
+#logo {
+    padding-left: 200px;
+}
+
+body {
+    font:  16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-top: 50px;
+    background: linear-gradient(
+      to bottom,
+      #00ccff 0%,
+      #00ccff 35%,
+      rgb(241, 160, 160) 35%,
+      rgb(241, 160, 160) 100%
+    );
+  } 
+  #opening-text {
+    margin-left: 200px;
+    font-weight: bold;
+  }
+
+#canvas{
+ margin-left: 400px;
+}
+
+.tackled-section {
+  background-image: url("../images/football\ tackle.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat; 
+  background-size: cover;
+  color: rgb(49, 36, 36);
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+}
+
+.goal-section{
+  background-image: url("../images/football\ celebration.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: rgb(217, 255, 0);
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+}
+
+ #start-button, .try-again-button, .main-menu-button{
+  font-size: 30px;
+background: linear-gradient(
+  to bottom,
+  #33ff00 0%,
+  #1c5380 100%
+);
+color: #fff; 
+padding: 20px 40px;
+border: 0;
+box-shadow: 30px;
+border-radius: 5px;
+margin-left: 500px;
+margin-bottom: 0px;
+cursor: pointer;
+}
