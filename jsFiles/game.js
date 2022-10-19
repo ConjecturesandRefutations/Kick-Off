@@ -4,5 +4,6 @@ class Game {
         this.obstacles = [];
         this.messi = [];
         this.score = 0;
+        this.opponentsScore = 0;
     }
 }

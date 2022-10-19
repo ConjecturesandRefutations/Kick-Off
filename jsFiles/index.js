@@ -9,6 +9,14 @@ background.src = "./images/football pitch.jpg";
 
 //Opening Area and Start Button
 
+const yourScore = document.getElementById('your-score')
+const opponentScore = document.getElementById('opponent-score')
+yourScore.style.display = 'none'
+opponentScore.style.display = 'none'
+
+
+//Opening Area and Start Button
+
 const toggleButton = document.querySelector('#start-button')
 const toggleOpening = document.querySelector('.opening-section')
 toggleOpening.style.display = ''
@@ -21,6 +29,7 @@ myCanvas.style.display = 'none'
 
 //Start Button
 
+
 window.onload = () => {
   toggleButton.onclick = () => {
     if (toggleOpening.style.display === ''){
@@ -29,6 +38,10 @@ window.onload = () => {
   if (myCanvas.style.display = 'none'){
       myCanvas.style.display = ''
   }
+
+ 
+yourScore.style.display = '' 
+opponentScore.style.display = ''
     
     
     startGame();
@@ -72,10 +85,11 @@ for (var i = 0 ; i < mainMenuButton.length; i++) {
 }
 
 function startGame() {
-  myCanvas.style.display = 'block';
+  myCanvas.style.display = 'block'; 
 
   currentGame = new Game();
   ctx.drawImage(background, 0, 0, myCanvas.width, myCanvas.height); // draw background image
+
   //Instantiate a new ball
   currentBall = new Ball();
   currentGame.ball = currentBall;
@@ -86,31 +100,34 @@ function startGame() {
 function updateCanvas() {
   ctx.clearRect(0, 0, 500, 700); // clear canvas
   ctx.drawImage(background, 0, 0, myCanvas.width, myCanvas.height); // redraw the background
+
   currentGame.ball.drawBall(); // redraw the ball at its current position
   obstaclesFrequency++;
   messiFrequency++
 
   //Logic for scoring goal
+  
   if (currentGame.ball.y < 25 && currentGame.ball.x > 200
      && currentGame.ball.x < 260){
-      toggleTackled.style.display = 'none'
-      myCanvas.style.display = 'none';
-      toggleOpening.style.display = 'none'
-      goalSection.style.display = ''
+      currentGame.ball.x = 231
+      currentGame.ball.y = 520
+      currentGame.score++
+      document.getElementById('scoreOne').innerHTML = currentGame.score
   }
 
   //Logic for own goal
   if (currentGame.ball.y > 630 && currentGame.ball.x > 200
     && currentGame.ball.x < 260){
-   alert ('OH no! You scored an OWN goal!')
-   myCanvas.style.display = 'none';
-          toggleOpening.style.display = ''
+      currentGame.ball.x = 231
+      currentGame.ball.y = 520
+          document.getElementById('scoreTwo').innerHTML = currentGame.opponentsScore
+          currentGame.opponentsScore++
  }
 
   if (obstaclesFrequency % 100 === 1) {
       //Draw an obstacle
       let randomObstacleX = 0;
-      let randomObstacleY = Math.floor(Math.random() * 700);
+      let randomObstacleY = Math.floor(Math.random() * 500);
       let randomObstacleWidth = 50;
       let randomObstacleHeight = 70;
       let newObstacle = new Obstacle(
@@ -125,7 +142,7 @@ function updateCanvas() {
   if (messiFrequency % 100 === 1) {
     //Draw an obstacle
     let randomMessiX = 450;
-    let randomMessiY = Math.floor(Math.random() * 700);
+    let randomMessiY = (Math.floor(Math.random() * 400));
     let randomMessiWidth = 50;
     let randomMessiHeight = 70;
     let newMessi = new Messi(
@@ -143,14 +160,20 @@ function updateCanvas() {
       currentGame.obstacles[i].y -= 2; 
       currentGame.obstacles[i].drawObstacle();
 
+      //Logic for getting tackled by obstacles
+
       if (detectCollision(currentGame.obstacles[i])) {
-          obstaclesFrequency = 0;
-          currentGame.score = 0;
+        currentGame.opponentsScore++ 
+        document.getElementById('scoreTwo').innerHTML = currentGame.opponentsScore
+        currentGame.ball.x = 231
+      currentGame.ball.y = 520
+           /*obstaclesFrequency = 0;
+            currentGame.score = 0;
           document.getElementById('score').innerHTML = 0;
           currentGame.obstacles = [];
           myCanvas.style.display = 'none';
           toggleOpening.style.display = 'none'
-          toggleTackled.style.display = ''
+          toggleTackled.style.display = ''  */
       }
       // Logic for removing obstacles
       if (currentGame.obstacles.length > 0 && currentGame.obstacles[i].y <= 10) {
@@ -160,27 +183,33 @@ function updateCanvas() {
 
   for(let j = 0; j<currentGame.messi.length; j++) {
     currentGame.messi[j].x -= 2; 
-    currentGame.messi[j].y += 2; 
     currentGame.messi[j].drawMessi();
 
+    //Logic for getting tackled by Messi
+
     if (detectCollision(currentGame.messi[j])) {
-        messiFrequency = 0;
+      currentGame.opponentsScore++
+      document.getElementById('scoreTwo').innerHTML = currentGame.opponentsScore
+      currentGame.ball.x = 231
+      currentGame.ball.y = 520
+        /* messiFrequency = 0;
         currentGame.score = 0;
         document.getElementById('score').innerHTML = 0;
         currentGame.messi = [];
         myCanvas.style.display = 'none';
         toggleOpening.style.display = 'none'
-        toggleTackled.style.display = ''
+        toggleTackled.style.display = '' */
     }
     // Logic for removing Messi obstacles
 
-if (currentGame.messi.length > 0 && currentGame.messi[j].y >= 670) {
+if (currentGame.messi.length > 0 && currentGame.messi[j].x <= 20) {
   currentGame.messi.splice(j, 1); // remove that Messi obstacle from the array
   } 
 
   }
 
   console.log(currentGame.obstacles)
+  console.log(currentGame.messi)
 
     requestAnimationFrame(updateCanvas);
 }
