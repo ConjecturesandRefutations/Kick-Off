@@ -54,56 +54,61 @@ opponentScore.style.display = ''
 };
 
 //Game-over Area
-const toggleTackled = document.querySelector('.tackled-section')
-toggleTackled.style.display = 'none'
-
-//Victory Area
-const goalSection = document.querySelector('.goal-section')
-goalSection.style.display = 'none'
+const fullTime = document.querySelector('.full-time')
+fullTime.style.display = 'none'
 
 
 //Restart Button
 let restartButton = document.getElementsByClassName('try-again-button')
     for (var i = 0 ; i < restartButton.length; i++) {
     restartButton[i].addEventListener('click',  ()=>{
-    toggleTackled.style.display = 'none';
-    goalSection.style.display = 'none'
+    fullTime.style.display = 'none';
     toggleOpening.style.display = 'none'
-    startGame()
-  }) ; 
+    myCanvas.style.display = 'block'
+  }) 
 } 
 
 //Main Menu Button
 let mainMenuButton = document.getElementsByClassName('main-menu-button')
 for (var i = 0 ; i < mainMenuButton.length; i++) {
   mainMenuButton[i].addEventListener('click',  ()=>{
-    toggleTackled.style.display = 'none';
-    goalSection.style.display = 'none'
+    fullTime.style.display = 'none';
     toggleOpening.style.display = ''
     location.reload() 
-  }) ; 
+  })  
 }
 
 function startGame() {
   myCanvas.style.display = 'block'; 
 
   currentGame = new Game();
-  ctx.drawImage(background, 0, 0, myCanvas.width, myCanvas.height); // draw background image
+  ctx.drawImage(background, 0, 0,myCanvas.width,myCanvas.height); // draw background image
 
   //Instantiate a new ball
   currentBall = new Ball();
   currentGame.ball = currentBall;
   currentGame.ball.drawBall();
        updateCanvas();// keeping track of the updates as the game unfolds
+
+  setInterval(endGame, 45000)
+
+  function endGame(){
+         toggleOpening.style.display = 'none'
+         yourScore.style.display = 'none'
+         opponentScore.style.display = 'none'
+         myCanvas.style.display = 'none'
+         fullTime.style.display = ''
+       }
+
 }
 
 function updateCanvas() {
-  ctx.clearRect(0, 0, 500, 700); // clear canvas
-  ctx.drawImage(background, 0, 0, myCanvas.width, myCanvas.height); // redraw the background
+  ctx.clearRect(0, 0, 700, 500); // clear canvas
+  ctx.drawImage(background, 0, 0,myCanvas.width,myCanvas.height); // redraw the background
 
   currentGame.ball.drawBall(); // redraw the ball at its current position
   obstaclesFrequency++;
-  messiFrequency++
+  messiFrequency++;
 
   //Logic for scoring goal
   
@@ -112,22 +117,25 @@ function updateCanvas() {
       currentGame.ball.x = 231
       currentGame.ball.y = 520
       currentGame.score++
-      document.getElementById('scoreOne').innerHTML = currentGame.score
+      document.querySelector('.scoreOne').innerHTML = currentGame.score
+      document.querySelector('.scoreOneM').innerHTML = currentGame.score
+      goalSound.play()
   }
 
   //Logic for own goal
   if (currentGame.ball.y > 630 && currentGame.ball.x > 200
     && currentGame.ball.x < 260){
+      currentGame.opponentsScore++
+      document.querySelector('.scoreTwo').innerHTML = currentGame.opponentsScore
+      document.querySelector('.scoreTwoM').innerHTML = currentGame.opponentsScore
       currentGame.ball.x = 231
       currentGame.ball.y = 520
-          document.getElementById('scoreTwo').innerHTML = currentGame.opponentsScore
-          currentGame.opponentsScore++
  }
 
   if (obstaclesFrequency % 100 === 1) {
       //Draw an obstacle
       let randomObstacleX = 0;
-      let randomObstacleY = Math.floor(Math.random() * 500);
+      let randomObstacleY = Math.floor(Math.random() * 410);
       let randomObstacleWidth = 50;
       let randomObstacleHeight = 70;
       let newObstacle = new Obstacle(
@@ -142,7 +150,7 @@ function updateCanvas() {
   if (messiFrequency % 100 === 1) {
     //Draw an obstacle
     let randomMessiX = 450;
-    let randomMessiY = (Math.floor(Math.random() * 400));
+    let randomMessiY = Math.floor(Math.random() * 410);
     let randomMessiWidth = 50;
     let randomMessiHeight = 70;
     let newMessi = new Messi(
@@ -156,27 +164,21 @@ function updateCanvas() {
 }
 
   for(let i = 0; i<currentGame.obstacles.length; i++) {
-      currentGame.obstacles[i].x += 2; 
-      currentGame.obstacles[i].y -= 2; 
+      currentGame.obstacles[i].x += 3; 
       currentGame.obstacles[i].drawObstacle();
 
       //Logic for getting tackled by obstacles
 
       if (detectCollision(currentGame.obstacles[i])) {
         currentGame.opponentsScore++ 
-        document.getElementById('scoreTwo').innerHTML = currentGame.opponentsScore
+        document.querySelector('.scoreTwo').innerHTML = currentGame.opponentsScore
+        document.querySelector('.scoreTwoM').innerHTML = currentGame.opponentsScore
         currentGame.ball.x = 231
-      currentGame.ball.y = 520
-           /*obstaclesFrequency = 0;
-            currentGame.score = 0;
-          document.getElementById('score').innerHTML = 0;
-          currentGame.obstacles = [];
-          myCanvas.style.display = 'none';
-          toggleOpening.style.display = 'none'
-          toggleTackled.style.display = ''  */
+        currentGame.ball.y = 520
+        tackleSound.play()
       }
       // Logic for removing obstacles
-      if (currentGame.obstacles.length > 0 && currentGame.obstacles[i].y <= 10) {
+      if (currentGame.obstacles.length > 0 && currentGame.obstacles[i].x >= 450) {
         currentGame.obstacles.splice(i, 1); // remove that obstacle from the array
       } 
     }
@@ -189,16 +191,11 @@ function updateCanvas() {
 
     if (detectCollision(currentGame.messi[j])) {
       currentGame.opponentsScore++
-      document.getElementById('scoreTwo').innerHTML = currentGame.opponentsScore
+      document.querySelector('.scoreTwo').innerHTML = currentGame.opponentsScore
+      document.querySelector('.scoreTwoM').innerHTML = currentGame.opponentsScore
       currentGame.ball.x = 231
       currentGame.ball.y = 520
-        /* messiFrequency = 0;
-        currentGame.score = 0;
-        document.getElementById('score').innerHTML = 0;
-        currentGame.messi = [];
-        myCanvas.style.display = 'none';
-        toggleOpening.style.display = 'none'
-        toggleTackled.style.display = '' */
+      tackleSound.play()
     }
     // Logic for removing Messi obstacles
 
@@ -208,16 +205,10 @@ if (currentGame.messi.length > 0 && currentGame.messi[j].x <= 20) {
 
   }
 
-  console.log(currentGame.obstacles)
-  console.log(currentGame.messi)
-
     requestAnimationFrame(updateCanvas);
 }
 
 function detectCollision(obstacle) {
- /*  return !((currentBall.y > obstacle.y + obstacle.height) || 
-  (currentBall.x + currentBall.width < obstacle.x) || 
-  (currentBall.x - currentBall.width  > obstacle.x + obstacle.width-50)) */
   return ((currentBall.x < obstacle.x + obstacle.width-10) &&         // check left side of element 
   (currentBall.x + obstacle.width-10 > obstacle.x) &&           // check right side
   (currentBall.y < obstacle.y+20 + obstacle.height) &&         // check top side
@@ -225,11 +216,11 @@ function detectCollision(obstacle) {
 }
 
 function detectCollision(messi) {
-    /*  return !((currentBall.y > messi.y + messi.height) || 
-     (currentBall.x + currentBall.width < messi.x) || 
-     (currentBall.x - currentBall.width  > messi.x + messi.width-50)) */
      return ((currentBall.x < messi.x + messi.width-10) &&         // check left side of element 
      (currentBall.x + messi.width-10 > messi.x) &&           // check right side
      (currentBall.y < messi.y+20 + messi.height) &&         // check top side
-     (currentBall.y + messi.height-50 > messi.y));           // check bottom side
+     (currentBall.y + messi.height > messi.y));           // check bottom side
+
    }
+
+   

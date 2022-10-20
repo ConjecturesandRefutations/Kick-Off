@@ -21,8 +21,8 @@ body {
  margin-left: 400px;
 }
 
-.tackled-section {
-  background-image: url("../images/football\ tackle.jpg");
+.full-time {
+  background-image: url("../images/referee\ giph.gif");
   height: 100%;
   background-position: center;
   background-repeat: no-repeat; 
@@ -34,17 +34,8 @@ body {
   flex-direction: row;
 }
 
-.goal-section{
-  background-image: url("../images/football\ celebration.jpg");
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: rgb(217, 255, 0);
-  font-size: 30px;
-  font-weight: bold;
-  display: flex;
-  flex-direction: row;
+#start-button{
+  margin-left: 850px
 }
 
  #start-button, .try-again-button, .main-menu-button{
@@ -59,16 +50,29 @@ padding: 20px 40px;
 border: 0;
 box-shadow: 30px;
 border-radius: 5px;
-margin-left: 500px;
 margin-bottom: 0px;
 cursor: pointer;
+}
+
+.try-again-button{
+  margin-left: 600px;
+  height: 100px
+}
+
+.main-menu-button{
+  margin-left: 100px;
+  height: 100px
 }
 
 #yourScore{
   margin-bottom: 70px;
 }
 
-#scoreOne, #scoreTwo {
+.scoreOne, .scoreTwo {
   font-size: 30px;
   font-weight: bold;
+}
+
+#score{
+  margin-left: 100px;
 }
