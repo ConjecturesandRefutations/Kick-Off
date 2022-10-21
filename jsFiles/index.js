@@ -27,8 +27,11 @@ const ctx = myCanvas.getContext('2d');
 
 myCanvas.style.display = 'none'
 
-//Start Button
+//Hiding the Countdown from opening page
 
+timer.style.display = 'none'
+
+//Start Button
 
 window.onload = () => {
   toggleButton.onclick = () => {
@@ -57,17 +60,6 @@ opponentScore.style.display = ''
 const fullTime = document.querySelector('.full-time')
 fullTime.style.display = 'none'
 
-
-//Restart Button
-let restartButton = document.getElementsByClassName('try-again-button')
-    for (var i = 0 ; i < restartButton.length; i++) {
-    restartButton[i].addEventListener('click',  ()=>{
-    fullTime.style.display = 'none';
-    toggleOpening.style.display = 'none'
-    myCanvas.style.display = 'block'
-  }) 
-} 
-
 //Main Menu Button
 let mainMenuButton = document.getElementsByClassName('main-menu-button')
 for (var i = 0 ; i < mainMenuButton.length; i++) {
@@ -80,6 +72,8 @@ for (var i = 0 ; i < mainMenuButton.length; i++) {
 
 function startGame() {
   myCanvas.style.display = 'block'; 
+  timer.style.display = ''
+  setInterval(updateCountdown, 1000)
 
   currentGame = new Game();
   ctx.drawImage(background, 0, 0,myCanvas.width,myCanvas.height); // draw background image
@@ -90,14 +84,23 @@ function startGame() {
   currentGame.ball.drawBall();
        updateCanvas();// keeping track of the updates as the game unfolds
 
-  setInterval(endGame, 45000)
+  let isGamePaused = false;
+
+  setInterval(endGame, 47000)
 
   function endGame(){
+    if (!isGamePaused){
+         currentGame.ball.x = 231
+         currentGame.ball.y = 520
          toggleOpening.style.display = 'none'
          yourScore.style.display = 'none'
          opponentScore.style.display = 'none'
          myCanvas.style.display = 'none'
          fullTime.style.display = ''
+         timer.style.display = 'none'
+         isClockPaused = true
+         isGamePaused = true
+    }
        }
 
 }
@@ -110,6 +113,22 @@ function updateCanvas() {
   obstaclesFrequency++;
   messiFrequency++;
 
+ 
+  //Restart Button
+let restartButton = document.getElementsByClassName('try-again-button')
+for (var i = 0 ; i < restartButton.length; i++) {
+restartButton[i].addEventListener('click',  ()=>{
+fullTime.style.display = 'none';
+toggleOpening.style.display = 'none'
+myCanvas.style.display = 'block'
+yourScore.style.display = '' 
+opponentScore.style.display = ''
+timer.style.display = ''
+resetScore()
+isClockPaused = false;
+}) 
+} 
+
   //Logic for scoring goal
   
   if (currentGame.ball.y < 25 && currentGame.ball.x > 200
@@ -117,8 +136,8 @@ function updateCanvas() {
       currentGame.ball.x = 231
       currentGame.ball.y = 520
       currentGame.score++
-      document.querySelector('.scoreOne').innerHTML = currentGame.score
-      document.querySelector('.scoreOneM').innerHTML = currentGame.score
+      document.querySelector('.scoreOne').innerText = currentGame.score
+      document.querySelector('.scoreOneM').innerText = currentGame.score
       goalSound.play()
   }
 
@@ -126,10 +145,11 @@ function updateCanvas() {
   if (currentGame.ball.y > 630 && currentGame.ball.x > 200
     && currentGame.ball.x < 260){
       currentGame.opponentsScore++
-      document.querySelector('.scoreTwo').innerHTML = currentGame.opponentsScore
-      document.querySelector('.scoreTwoM').innerHTML = currentGame.opponentsScore
+      document.querySelector('.scoreTwo').innerText = currentGame.opponentsScore
+      document.querySelector('.scoreTwoM').innerText = currentGame.opponentsScore
       currentGame.ball.x = 231
       currentGame.ball.y = 520
+      ownGoalSound.play()
  }
 
   if (obstaclesFrequency % 100 === 1) {
@@ -171,8 +191,8 @@ function updateCanvas() {
 
       if (detectCollision(currentGame.obstacles[i])) {
         currentGame.opponentsScore++ 
-        document.querySelector('.scoreTwo').innerHTML = currentGame.opponentsScore
-        document.querySelector('.scoreTwoM').innerHTML = currentGame.opponentsScore
+        document.querySelector('.scoreTwo').innerText = currentGame.opponentsScore
+        document.querySelector('.scoreTwoM').innerText = currentGame.opponentsScore
         currentGame.ball.x = 231
         currentGame.ball.y = 520
         tackleSound.play()
@@ -191,8 +211,8 @@ function updateCanvas() {
 
     if (detectCollision(currentGame.messi[j])) {
       currentGame.opponentsScore++
-      document.querySelector('.scoreTwo').innerHTML = currentGame.opponentsScore
-      document.querySelector('.scoreTwoM').innerHTML = currentGame.opponentsScore
+      document.querySelector('.scoreTwo').innerText = currentGame.opponentsScore
+      document.querySelector('.scoreTwoM').innerText = currentGame.opponentsScore
       currentGame.ball.x = 231
       currentGame.ball.y = 520
       tackleSound.play()
@@ -202,6 +222,16 @@ function updateCanvas() {
 if (currentGame.messi.length > 0 && currentGame.messi[j].x <= 20) {
   currentGame.messi.splice(j, 1); // remove that Messi obstacle from the array
   } 
+
+    //To reset the score
+    function resetScore(){
+      document.querySelector('.scoreOne').innerText = 0
+      document.querySelector('.scoreOneM').innerText = 0
+      document.querySelector('.scoreTwo').innerText = 0
+      document.querySelector('.scoreTwoM').innerText = 0
+      currentGame.score = 0
+      currentGame.opponentsScore = 0
+    }
 
   }
 
@@ -220,7 +250,6 @@ function detectCollision(messi) {
      (currentBall.x + messi.width-10 > messi.x) &&           // check right side
      (currentBall.y < messi.y+20 + messi.height) &&         // check top side
      (currentBall.y + messi.height > messi.y));           // check bottom side
-
    }
 
    

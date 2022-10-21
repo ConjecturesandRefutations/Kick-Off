@@ -18,7 +18,12 @@ body {
   }
 
 #canvas{
- margin-left: 400px;
+  display: table;
+  margin: 0 auto;
+}
+
+.scoreOneM, .scoreTwoM{
+  color: yellow;
 }
 
 .full-time {
@@ -28,10 +33,11 @@ body {
   background-repeat: no-repeat; 
   background-size: cover;
   color: rgb(49, 36, 36);
-  font-size: 30px;
+  font-size: 40px;
   font-weight: bold;
   display: flex;
   flex-direction: row;
+  color: purple;
 }
 
 #start-button{
@@ -66,13 +72,24 @@ cursor: pointer;
 
 #yourScore{
   margin-bottom: 70px;
+  margin-left: 10px
 }
 
 .scoreOne, .scoreTwo {
-  font-size: 30px;
+  font-size: 40px;
   font-weight: bold;
+  color: red;
 }
 
 #score{
   margin-left: 100px;
 }
+
+#countdown{
+  font-size: 50px;
+}
+
+#info{
+  float: left;
+}
+
