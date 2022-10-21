@@ -9,7 +9,8 @@ function updateCountdown(){
     if (!isClockPaused){
     startingSeconds--;
     }
-    if (startingSeconds===-1){
+    if (startingSeconds===-2){
         startingSeconds=45
     } 
 }
+

@@ -27,7 +27,7 @@ Data Structure
 index.html/styles.css
 ................
 splashScreen display
-gameScreen
+gameScreen display
 restartButton display
 mainMenuButton display
 restartButton display
@@ -37,7 +37,7 @@ endGame display
 index.js
 .................
 splashScreen() functionality
-gameScreen()
+gameScreen() functionality
 restartButton() functionality
 mainMenuButton() functionality
 restartButton() functionality

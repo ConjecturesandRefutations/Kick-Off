@@ -84,25 +84,6 @@ function startGame() {
   currentGame.ball.drawBall();
        updateCanvas();// keeping track of the updates as the game unfolds
 
-  let isGamePaused = false;
-
-  setInterval(endGame, 47000)
-
-  function endGame(){
-    if (!isGamePaused){
-         currentGame.ball.x = 231
-         currentGame.ball.y = 520
-         toggleOpening.style.display = 'none'
-         yourScore.style.display = 'none'
-         opponentScore.style.display = 'none'
-         myCanvas.style.display = 'none'
-         fullTime.style.display = ''
-         timer.style.display = 'none'
-         isClockPaused = true
-         isGamePaused = true
-    }
-       }
-
 }
 
 function updateCanvas() {
@@ -112,12 +93,13 @@ function updateCanvas() {
   currentGame.ball.drawBall(); // redraw the ball at its current position
   obstaclesFrequency++;
   messiFrequency++;
-
  
   //Restart Button
 let restartButton = document.getElementsByClassName('try-again-button')
 for (var i = 0 ; i < restartButton.length; i++) {
 restartButton[i].addEventListener('click',  ()=>{
+startingSeconds = 45
+isClockPaused= false;
 fullTime.style.display = 'none';
 toggleOpening.style.display = 'none'
 myCanvas.style.display = 'block'
@@ -125,9 +107,24 @@ yourScore.style.display = ''
 opponentScore.style.display = ''
 timer.style.display = ''
 resetScore()
-isClockPaused = false;
 }) 
 } 
+
+if (startingSeconds ===-1){
+  endGame()
+}
+
+function endGame(){
+       currentGame.ball.x = 231
+       currentGame.ball.y = 520
+       toggleOpening.style.display = 'none'
+       yourScore.style.display = 'none'
+       opponentScore.style.display = 'none'
+       myCanvas.style.display = 'none'
+       fullTime.style.display = ''
+       timer.style.display = 'none'
+       isClockPaused = true
+     }
 
   //Logic for scoring goal
   
