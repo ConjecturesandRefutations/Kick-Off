@@ -4,7 +4,7 @@ class Obstacle {
         this.y = y;
         this.width = 50;
         this.height = 70;
-        this.img = './images/zidane.png'
+        this.img = './images/zidane (3).png'
     }
 
     drawObstacle(){
@@ -18,9 +18,9 @@ class Obstacle {
       constructor(x, y, width, height) {
           this.x = x;
           this.y = y;
-          this.width = 50;
+          this.width = 30;
           this.height = 70;
-          this.img = './images/cartoon messi.png'
+          this.img = './images/messi.png'
       }
   
       drawMessi(){

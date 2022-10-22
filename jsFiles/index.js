@@ -168,7 +168,7 @@ function endGame(){
     //Draw an obstacle
     let randomMessiX = 450;
     let randomMessiY = Math.floor(Math.random() * 410);
-    let randomMessiWidth = 50;
+    let randomMessiWidth = 30;
     let randomMessiHeight = 70;
     let newMessi = new Messi(
         randomMessiX, 
@@ -236,17 +236,19 @@ if (currentGame.messi.length > 0 && currentGame.messi[j].x <= 20) {
 }
 
 function detectCollision(obstacle) {
-  return ((currentBall.x < obstacle.x + obstacle.width-10) &&         // check left side of element 
-  (currentBall.x + obstacle.width-10 > obstacle.x) &&           // check right side
-  (currentBall.y < obstacle.y+20 + obstacle.height) &&         // check top side
+  return ((currentBall.x < obstacle.x + obstacle.width) &&         // check left side of element 
+  (currentBall.x + obstacle.width > obstacle.x) &&           // check right side
+  (currentBall.y < obstacle.y + obstacle.height) &&         // check top side
   (currentBall.y + obstacle.height > obstacle.y));           // check bottom side
 }
 
 function detectCollision(messi) {
-     return ((currentBall.x < messi.x + messi.width-10) &&         // check left side of element 
-     (currentBall.x + messi.width-10 > messi.x) &&           // check right side
-     (currentBall.y < messi.y+20 + messi.height) &&         // check top side
+     return ((currentBall.x < messi.x + messi.width) &&         // check left side of element 
+     (currentBall.x + messi.width > messi.x) &&           // check right side
+     (currentBall.y < messi.y  + messi.height) &&         // check top side
      (currentBall.y + messi.height > messi.y));           // check bottom side
    }
+
+   
 
    
