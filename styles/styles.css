@@ -33,7 +33,6 @@ body {
   background-position: center;
   background-repeat: no-repeat; 
   background-size: cover;
-  color: rgb(49, 36, 36);
   font-size: 40px;
   font-weight: bold;
   display: flex;
@@ -47,7 +46,7 @@ body {
 
  #start-button, .try-again-button, .main-menu-button{
   font-size: 30px;
-background: linear-gradient(
+  background: linear-gradient(
   to bottom,
   #33ff00 0%,
   #1c5380 100%

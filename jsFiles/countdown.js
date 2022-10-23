@@ -5,7 +5,7 @@ const countdown = document.getElementById('countdown')
 const timer = document.getElementById('timer')
 
 function updateCountdown(){
-    countdown.innerHTML = ` ${startingSeconds}`;
+    countdown.innerText = ` ${startingSeconds}`;
     if (!isClockPaused){
     startingSeconds--;
     }
