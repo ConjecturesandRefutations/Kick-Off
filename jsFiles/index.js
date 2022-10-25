@@ -58,7 +58,7 @@ timer.style.display = ''
 
   document.onkeydown = (e) => {
     let whereToGo = e.keyCode;
-    currentGame.ball.moveBall(whereToGo);
+    currentBall.moveBall(whereToGo);
 }
 };
 
@@ -80,8 +80,8 @@ function startGame() {
 
   //Instantiate a new ball
   currentBall = new Ball();
-  currentGame.ball = currentBall;
-  currentGame.ball.drawBall();
+  currentBall = currentBall;
+  currentBall.drawBall();
        updateCanvas();// keeping track of the updates as the game unfolds
 
 }
@@ -90,16 +90,16 @@ function updateCanvas() {
   ctx.clearRect(0, 0, 700, 500); // clear canvas
   ctx.drawImage(background, 0, 0,myCanvas.width,myCanvas.height); // redraw the background
 
-  currentGame.ball.drawBall(); // redraw the ball at its current position
+ currentBall.drawBall(); // redraw the ball at its current position
   obstaclesFrequency++;
   messiFrequency++;
 
   //Logic for scoring goal
   
-  if (currentGame.ball.y < 25 && currentGame.ball.x > 200
-     && currentGame.ball.x < 260){
-      currentGame.ball.x = 231
-      currentGame.ball.y = 520
+  if (currentBall.y < 25 && currentBall.x > 200
+     && currentBall.x < 260){
+      currentBall.x = 231
+      currentBall.y = 520
       currentGame.score++
       document.querySelector('.scoreOne').innerText = currentGame.score
       document.querySelector('.scoreOneM').innerText = currentGame.score
@@ -107,13 +107,13 @@ function updateCanvas() {
   }
 
   //Logic for own goal
-  if (currentGame.ball.y > 630 && currentGame.ball.x > 200
-    && currentGame.ball.x < 260){
+  if (currentBall.y > 630 && currentBall.x > 200
+    && currentBall.x < 260){
       currentGame.opponentsScore++
       document.querySelector('.scoreTwo').innerText = currentGame.opponentsScore
       document.querySelector('.scoreTwoM').innerText = currentGame.opponentsScore
-      currentGame.ball.x = 231
-      currentGame.ball.y = 520
+      currentBall.x = 231
+      currentBall.y = 520
       ownGoalSound.play()
  }
 
@@ -158,8 +158,8 @@ function updateCanvas() {
         currentGame.opponentsScore++ 
         document.querySelector('.scoreTwo').innerText = currentGame.opponentsScore
         document.querySelector('.scoreTwoM').innerText = currentGame.opponentsScore
-        currentGame.ball.x = 231
-        currentGame.ball.y = 520
+        currentBall.x = 231
+        currentBall.y = 520
         tackleSound.play()
       }
       // Logic for removing obstacles
@@ -178,8 +178,8 @@ function updateCanvas() {
       currentGame.opponentsScore++
       document.querySelector('.scoreTwo').innerText = currentGame.opponentsScore
       document.querySelector('.scoreTwoM').innerText = currentGame.opponentsScore
-      currentGame.ball.x = 231
-      currentGame.ball.y = 520
+      currentBall.x = 231
+      currentBall.y = 520
       tackleSound.play()
     }
     // Logic for removing Messi obstacles
@@ -200,7 +200,7 @@ if (currentGame.messi.length > 0 && currentGame.messi[j].x <= 20) {
 
 //Restart Button
 let restartButton = document.getElementsByClassName('try-again-button')
-for (var i = 0 ; i < restartButton.length; i++) {
+for (let i = 0 ; i < restartButton.length; i++) {
 restartButton[i].addEventListener('click',  ()=>{
 startingSeconds = 45
 isClockPaused= false;
@@ -219,8 +219,8 @@ if (startingSeconds ===-1){
 }
 
 function endGame(){
-  currentGame.ball.x = 231
-  currentGame.ball.y = 520
+  currentBall.x = 231
+  currentBall.y = 520
   toggleOpening.style.display = 'none'
   yourScore.style.display = 'none'
   opponentScore.style.display = 'none'
@@ -239,5 +239,5 @@ function detectCollision(obstacle) {
   return ((currentBall.x < obstacle.x + obstacle.width) &&         // check left side of element 
   (currentBall.x + obstacle.width > obstacle.x) &&           // check right side
   (currentBall.y < obstacle.y + obstacle.height) &&         // check top side
-  (currentBall.y + obstacle.height > obstacle.y));           // check bottom side
+  (currentBall.y + currentBall.height > obstacle.y));           // check bottom side
 }
