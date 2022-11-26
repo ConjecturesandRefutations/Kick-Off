@@ -1,7 +1,9 @@
 class Game {
     constructor() {
-        this.snake = {},
-        this.food = [];
+        this.ball = {},
+        this.obstacles = [];
+        this.messi = [];
         this.score = 0;
+        this.opponentsScore = 0;
     }
 }

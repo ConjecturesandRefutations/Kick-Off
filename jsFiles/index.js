@@ -1,19 +1,24 @@
 let currentGame;
-let currentSnake;
+let currentBall;
 
-let foodFrequency = 0; // support the logic for generating obstacles
+let obstaclesFrequency = 0; // support the logic for generating obstacles
+let messiFrequency = 0 // support the logic for generating Messi-type obstacles
 
 let background = new Image();
-background.src = "./images/background snake.jpg";
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+background.src = "./images/football pitch.jpg";
 
 //Opening Area and Start Button
 
-const toggleButton = document.getElementById('start-button')
-const toggleOpening = document.getElementById('opening-section')
+const yourScore = document.getElementById('your-score')
+const opponentScore = document.getElementById('opponent-score')
+yourScore.style.display = 'none'
+opponentScore.style.display = 'none'
+
+
+//Opening Area and Start Button
+
+const toggleButton = document.querySelector('#start-button')
+const toggleOpening = document.querySelector('.opening-section')
 toggleOpening.style.display = ''
 
 //Game Area
@@ -22,36 +27,40 @@ const ctx = myCanvas.getContext('2d');
 
 myCanvas.style.display = 'none'
 
-//Score Area
-const info = document.getElementById('info')
-info.style.display = 'none'
+//Game-over Area
+const fullTime = document.querySelector('.full-time')
+fullTime.style.display = 'none'
 
-//Game-Over Area
+//Hiding the Countdown from opening page
 
-const gameOver = document.getElementById('game-over')
-gameOver.style.display = 'none' 
+timer.style.display = 'none'
 
 //Start Button
 
 window.onload = () => {
-    toggleButton.onclick = () => {
-      if (toggleOpening.style.display === ''){
-        toggleOpening.style.display = 'none';
-    }
-    if (myCanvas.style.display = 'none'){
-        myCanvas.style.display = ''
-    }
+  toggleButton.onclick = () => {
+    if (toggleOpening.style.display === ''){
+      toggleOpening.style.display = 'none';
+  }
+  if (myCanvas.style.display = 'none'){
+      myCanvas.style.display = ''
+  }
 
-    info.style.display = ''
-
+ 
+yourScore.style.display = '' 
+opponentScore.style.display = ''
+myCanvas.style.display = 'block'; 
+timer.style.display = ''
+    
+    
     startGame();
   };
+
   document.onkeydown = (e) => {
     let whereToGo = e.keyCode;
-    currentSnake.moveSnake(whereToGo);
+    currentBall.moveBall(whereToGo);
 }
 };
-
 
 //Main Menu Button
 let mainMenuButton = document.getElementsByClassName('main-menu-button')
@@ -64,39 +73,51 @@ for (let i = 0 ; i < mainMenuButton.length; i++) {
 }
 
 function startGame() {
+  setInterval(updateCountdown, 1000)
 
   currentGame = new Game();
   ctx.drawImage(background, 0, 0,myCanvas.width,myCanvas.height); // draw background image
 
-  //Instantiate a new snake
-  currentSnake = new Snake();
-  currentSnake.drawSnake();
+  //Instantiate a new ball
+  currentBall = new Ball();
+  currentBall = currentBall;
+  currentBall.drawBall();
        updateCanvas();// keeping track of the updates as the game unfolds
 
 }
 
 function updateCanvas() {
-  ctx.clearRect(0, 0, 500, 700); // clear canvas
-  ctx.drawImage(background, 0, 0, myCanvas.width, myCanvas.height); // redraw the background
+  ctx.clearRect(0, 0, 700, 500); // clear canvas
+  ctx.drawImage(background, 0, 0,myCanvas.width,myCanvas.height); // redraw the background
 
- currentSnake.drawSnake(); // redraw the snake at its current position
+ currentBall.drawBall(); // redraw the ball at its current position
+  obstaclesFrequency++;
+  messiFrequency++;
 
- //Logic for colliding with the walls
+  //Logic for scoring goal
+  
+  if (currentBall.y < 25 && currentBall.x > 200
+     && currentBall.x < 260){
+      currentBall.x = 231
+      currentBall.y = 520
+      currentGame.score++
+      document.querySelector('.scoreOne').innerText = currentGame.score
+      document.querySelector('.scoreOneM').innerText = currentGame.score
+      goalSound.play()
+  }
 
-if ( currentSnake.x < 0 || currentSnake.x > 681
-    || currentSnake.y < 0|| currentSnake.y > 480   ){
-        myCanvas.style.display = 'none'
-        info.style.display = 'none'
-        gameOver.style.display = '' 
+  //Logic for own goal
+  if (currentBall.y > 630 && currentBall.x > 200
+    && currentBall.x < 260){
+      currentGame.opponentsScore++
+      document.querySelector('.scoreTwo').innerText = currentGame.opponentsScore
+      document.querySelector('.scoreTwoM').innerText = currentGame.opponentsScore
+      currentBall.x = 231
+      currentBall.y = 520
+      ownGoalSound.play()
  }
 
-
-  requestAnimationFrame(updateCanvas);
-}
-
-
-
-/*   if (obstaclesFrequency % 60 === 1) {
+  if (obstaclesFrequency % 100 === 1) {
       //Draw an obstacle
       let randomObstacleX = 0;
       let randomObstacleY = Math.floor(Math.random() * 410);
@@ -110,6 +131,22 @@ if ( currentSnake.x < 0 || currentSnake.x > 681
 
       currentGame.obstacles.push(newObstacle);
   }
+
+  if (messiFrequency % 100 === 1) {
+    //Draw an obstacle
+    let randomMessiX = 450;
+    let randomMessiY = Math.floor(Math.random() * 410);
+    let randomMessiWidth = 30;
+    let randomMessiHeight = 70;
+    let newMessi = new Messi(
+        randomMessiX, 
+        randomMessiY, 
+        randomMessiWidth, 
+        randomMessiHeight);
+
+    currentGame.messi.push(newMessi);
+
+}
 
   for(let i = 0; i<currentGame.obstacles.length; i++) {
       currentGame.obstacles[i].x += 3; 
@@ -131,14 +168,76 @@ if ( currentSnake.x < 0 || currentSnake.x > 681
       } 
     }
 
-    
+  for(let j = 0; j<currentGame.messi.length; j++) {
+    currentGame.messi[j].x -= 2; 
+    currentGame.messi[j].drawMessi();
 
-function detectCollision(obstacle) {
-  return ((currentSnake.x < obstacle.x + obstacle.width) &&         // check left side of element 
-  (currentSnake.x + obstacle.width > obstacle.x) &&           // check right side
-  (currentSnake.y < obstacle.y + obstacle.height) &&         // check top side
-  (currentSnake.y + currentSnake.height > obstacle.y));           // check bottom side
+    //Logic for getting tackled by Messi
+
+    if (detectCollision(currentGame.messi[j])) {
+      currentGame.opponentsScore++
+      document.querySelector('.scoreTwo').innerText = currentGame.opponentsScore
+      document.querySelector('.scoreTwoM').innerText = currentGame.opponentsScore
+      currentBall.x = 231
+      currentBall.y = 520
+      tackleSound.play()
+    }
+    // Logic for removing Messi obstacles
+
+if (currentGame.messi.length > 0 && currentGame.messi[j].x <= 20) {
+  currentGame.messi.splice(j, 1); // remove that Messi obstacle from the array
+  } 
+
+    //To reset the score
+    function resetScore(){
+      document.querySelector('.scoreOne').innerText = 0
+      document.querySelector('.scoreOneM').innerText = 0
+      document.querySelector('.scoreTwo').innerText = 0
+      document.querySelector('.scoreTwoM').innerText = 0
+      currentGame.score = 0
+      currentGame.opponentsScore = 0
+    }
+
+//Restart Button
+let restartButton = document.getElementsByClassName('try-again-button')
+for (let i = 0 ; i < restartButton.length; i++) {
+restartButton[i].addEventListener('click',  ()=>{
+startingSeconds = 45
+isClockPaused= false;
+fullTime.style.display = 'none';
+toggleOpening.style.display = 'none'
+myCanvas.style.display = 'block'
+yourScore.style.display = '' 
+opponentScore.style.display = ''
+timer.style.display = ''
+resetScore()
+}) 
+} 
+
+if (startingSeconds ===-1){
+  endGame()
+}
+
+function endGame(){
+  currentBall.x = 231
+  currentBall.y = 520
+  toggleOpening.style.display = 'none'
+  yourScore.style.display = 'none'
+  opponentScore.style.display = 'none'
+  myCanvas.style.display = 'none'
+  timer.style.display = 'none'
+  fullTime.style.display = ''
+  isClockPaused = true
+}
+
+  }
 
     requestAnimationFrame(updateCanvas);
 }
-} */
+
+function detectCollision(obstacle) {
+  return ((currentBall.x < obstacle.x + obstacle.width) &&         // check left side of element 
+  (currentBall.x + obstacle.width > obstacle.x) &&           // check right side
+  (currentBall.y < obstacle.y + obstacle.height) &&         // check top side
+  (currentBall.y + currentBall.height > obstacle.y));           // check bottom side
+}
