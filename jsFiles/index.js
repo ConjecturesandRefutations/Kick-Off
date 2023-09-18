@@ -49,7 +49,6 @@ window.onload = () => {
  
 yourScore.style.display = '' 
 opponentScore.style.display = ''
-myCanvas.style.display = 'block'; 
 timer.style.display = ''
     
     
@@ -80,9 +79,8 @@ function startGame() {
 
   //Instantiate a new ball
   currentBall = new Ball();
-  currentBall = currentBall;
   currentBall.drawBall();
-       updateCanvas();// keeping track of the updates as the game unfolds
+  updateCanvas();// keeping track of the updates as the game unfolds
 
 }
 
@@ -117,7 +115,7 @@ function updateCanvas() {
       ownGoalSound.play()
  }
 
-  if (obstaclesFrequency % 100 === 1) {
+  if (obstaclesFrequency % 60 === 1) {
       //Draw an obstacle
       let randomObstacleX = 0;
       let randomObstacleY = Math.floor(Math.random() * 410);
@@ -132,7 +130,7 @@ function updateCanvas() {
       currentGame.obstacles.push(newObstacle);
   }
 
-  if (messiFrequency % 100 === 1) {
+  if (messiFrequency % 60 === 1) {
     //Draw an obstacle
     let randomMessiX = 450;
     let randomMessiY = Math.floor(Math.random() * 410);
@@ -169,7 +167,7 @@ function updateCanvas() {
     }
 
   for(let j = 0; j<currentGame.messi.length; j++) {
-    currentGame.messi[j].x -= 2; 
+    currentGame.messi[j].x -= 3; 
     currentGame.messi[j].drawMessi();
 
     //Logic for getting tackled by Messi

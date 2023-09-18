@@ -13,7 +13,6 @@ class Ball {
       ctx.drawImage(ballImg, this.x, this.y, this.width, this.height);
     }
 
-
     moveBall(keyCode){
       console.log('x', this.x);
       console.log('y', this.y);

@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;800&family=VT323&');
+
+
 #logo {
     padding-left: 200px;
 }
 
 body {
-    font:  16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font:  16px/1.5 'Poppins', "Helvetica Neue", Helvetica, Arial, sans-serif;
     background: linear-gradient(
       to bottom,
       #00ccff 0%,
